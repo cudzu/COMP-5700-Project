@@ -19,7 +19,8 @@ The analysis is part of a course project and demonstrates practical skills in da
 
 ```
 .
-├── project.py                 # Combined script for Task-1 and Task-2
+├── task1.py                 # Script for Task-1
+├── task1.py                 # Script for Task-2
 ├── pull_requests.csv          # Generated CSV from Task-1
 ├── repositories.csv           # Generated CSV from Task-2
 └── README.md
