@@ -61,7 +61,7 @@ The analysis is part of a course project and demonstrates practical skills in da
 1. Clone this repository:
 
 ```bash
-git clone https://github.com/<your-username>/AIDev-Security-Analysis.git
+git clone https://github.com/cudzu/AIDev-Security-Analysis.git
 cd AIDev-Security-Analysis
 ```
 
