@@ -2,7 +2,7 @@
 
 This project focuses on analyzing AI-generated pull requests and repositories from the [AIDev dataset](https://huggingface.co/datasets/hao-li/AIDev) to understand the types of security-related tasks performed by agentic AI tools. The project extracts relevant information into CSV files for further exploration and analysis.
 
-The analysis is part of a course project and demonstrates practical skills in dataset extraction, cleaning, and organization using Python.
+The analysis is part of a course project and demonstrates practical skills in dataset extraction, cleaning, joining, classification, and organization using Python.
 
 ## Dataset
 
@@ -19,88 +19,146 @@ The analysis is part of a course project and demonstrates practical skills in da
 
 ```
 .
-├── task1.py                 # Script for Task-1
-├── task2.py                 # Script for Task-2
-├── task3.py                 # Script for Task-3
-├── task4.py                 # Script for Task-4
-├── task5.py                 # Script for Task-5
-├── pull_requests.csv          # Generated CSV from Task-1
-├── repositories.csv           # Generated CSV from Task-2
-├── repositories.csv           # Generated CSV from Task-3
-├── repositories.csv           # Generated CSV from Task-4
-├── repositories.csv           # Generated CSV from Task-5
+├── task1.py                     # Script for Task-1 (Pull Request Extraction)
+├── task2.py                     # Script for Task-2 (Repository Extraction)
+├── task3.py                     # Script for Task-3 (PR Type Classification)
+├── task4.py                     # Script for Task-4 (Confidence Aggregation / Supporting Computation)
+├── task5.py                     # Script for Task-5 (Security Keyword Analysis)
+│
+├── pull_requests.csv            # Output of Task-1
+├── repositories.csv             # Output of Task-2
+├── pr_task_types.csv            # Output of Task-3
+├── task4_output.csv             # Output of Task-4
+├── task5_security_summary.csv   # Output of Task-5
+│
 └── README.md
 ```
 
 ## Tasks
 
-### Task-1: Extract Pull Request Data
+### **Task-1: Extract Pull Request Data**
 
-- Extracted columns:
-  | CSV Header | Source Column |
-  |------------|---------------|
-  | TITLE      | `title`       |
-  | ID         | `id`          |
-  | AGENTNAME  | `agent`       |
-  | BODYSTRING | `body`        |
-  | REPOID     | `repo_id`     |
-  | REPOURL    | `repo_url`    |
+Extracted fields from `all_pull_request.parquet`:
 
-- Output CSV: `pull_requests.csv`
-- Method: Loaded the Parquet file directly using **pandas** to avoid schema mismatch issues.
+| CSV Header | Source Column |
+|------------|---------------|
+| TITLE      | `title`       |
+| ID         | `id`          |
+| AGENTNAME  | `agent`       |
+| BODYSTRING | `body`        |
+| REPOID     | `repo_id`     |
+| REPOURL    | `repo_url`    |
 
-### Task-2: Extract Repository Data
+- Output: `pull_requests.csv`
+- Method: Loaded Parquet directly using **pandas** to avoid schema mismatch issues.
 
-- Extracted columns:
-  | CSV Header | Source Column |
-  |------------|---------------|
-  | REPOID     | `id`          |
-  | LANG       | `language`    |
-  | STARS      | `stars`       |
-  | REPOURL    | `url`         |
+---
 
-- Output CSV: `repositories.csv`
-- Method: Loaded the Parquet file directly using **pandas**, consistent with Task-1.
+### **Task-2: Extract Repository Data**
+
+Extracted fields from `all_repository.parquet`:
+
+| CSV Header | Source Column |
+|------------|---------------|
+| REPOID     | `id`          |
+| LANG       | `language`    |
+| STARS      | `stars`       |
+| REPOURL    | `url`         |
+
+- Output: `repositories.csv`
+- Method: Same direct Parquet→CSV extraction as Task-1.
+
+---
+
+### **Task-3: Classify Pull Requests by Type**
+
+This task determines the *type* of each pull request and computes a confidence score.
+
+- Input: `pull_requests.csv`
+- Output: `pr_task_types.csv` containing:
+  | CSV Header  | Description |
+  |-------------|-------------|
+  | PRID        | Pull request ID |
+  | PRTITLE     | Title text |
+  | PRREASON    | Classification basis |
+  | PRTYPE      | Final type label |
+  | CONFIDENCE  | Confidence score |
+
+---
+
+### **Task-4: Additional PR or Repository Processing**
+
+Task-4 performs additional computations required by the assignment (confidence aggregation, supplemental extraction, etc.).
+
+- Output: `task4_output.csv`
+
+---
+
+### **Task-5: Security Keyword Classification**
+
+Task‑5 merges outputs of Task‑1 and Task‑3, then assigns a **SECURITY flag** based on keyword detection.
+
+Security-related keywords include:
+
+```
+race, racy, buffer, overflow, stack, integer, signedness,
+underflow, improper, unauthenticated, gain access, permission,
+cross site, css, xss, denial service, dos, crash, deadlock,
+injection, request forgery, csrf, xsrf, forged, security,
+vulnerability, vulnerable, exploit, attack, bypass, backdoor,
+threat, expose, breach, violate, fatal, blacklist, overrun,
+insecure
+```
+
+- SECURITY = **1** → keyword appears in title or body  
+- SECURITY = **0** → otherwise  
+
+**Output Columns:**
+| Column     | Description |
+|------------|-------------|
+| ID         | Pull Request ID |
+| AGENT      | Name of AI agent |
+| TYPE       | PR type |
+| CONFIDENCE | Confidence score |
+| SECURITY   | 1/0 keyword flag |
+
+Output: `task5_security_summary.csv`
+
+---
 
 ## Usage
 
-1. Clone this repository:
+1. Clone the repository:
 
 ```bash
 git clone https://github.com/cudzu/COMP-5700-Project
 cd COMP-5700-Project
 ```
 
-2. Install required packages:
+2. Install dependencies:
 
 ```bash
 pip install pandas pyarrow
 ```
 
-3. Run the combined script:
+3. Run scripts:
 
 ```bash
-python project.py
+python task1.py
+python task2.py
+python task3.py
+python task4.py
+python task5.py
 ```
 
-This will generate:
-- `pull_requests.csv`
-- `repositories.csv`
+---
 
 ## Notes
 
-- Both scripts read Parquet files directly from Hugging Face to avoid schema conflicts.
-- The CSV files can be used for further analysis, including identifying security-related tasks performed by AI agents.
-
-## Project Summary
-
-This project investigates AI-generated software development contributions, specifically pull requests and repository data, to explore security-related patterns. By extracting structured datasets from the AIDev repository, we aim to analyze the types of tasks that autonomous AI agents perform in coding environments.
-
-The workflow includes downloading the dataset, processing it using Python, and creating CSV files that isolate relevant fields for analysis. This approach allows for easy exploration of AI behavior in software engineering tasks and provides a foundation for future studies on AI-assisted security improvements.
-
-Through this project, we develop skills in dataset extraction, transformation, and practical data management, while gaining insight into the current capabilities of agentic AI in development workflows.
+- Uses **pandas** for Parquet reading to avoid schema issues.
+- CSV outputs are prepared for downstream analysis and security research.
+- Suitable for studying AI agent behavior in software engineering workflows.
 
 ## References
 
 - [Hugging Face AIDev Dataset](https://huggingface.co/datasets/hao-li/AIDev)
-
