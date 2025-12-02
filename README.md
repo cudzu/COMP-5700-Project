@@ -61,8 +61,8 @@ The analysis is part of a course project and demonstrates practical skills in da
 1. Clone this repository:
 
 ```bash
-git clone https://github.com/cudzu/AIDev-Security-Analysis.git
-cd AIDev-Security-Analysis
+git clone https://github.com/cudzu/COMP-5700-Project
+cd COMP-5700-Project
 ```
 
 2. Install required packages:
