@@ -20,9 +20,15 @@ The analysis is part of a course project and demonstrates practical skills in da
 ```
 .
 ├── task1.py                 # Script for Task-1
-├── task1.py                 # Script for Task-2
+├── task2.py                 # Script for Task-2
+├── task3.py                 # Script for Task-3
+├── task4.py                 # Script for Task-4
+├── task5.py                 # Script for Task-5
 ├── pull_requests.csv          # Generated CSV from Task-1
 ├── repositories.csv           # Generated CSV from Task-2
+├── repositories.csv           # Generated CSV from Task-3
+├── repositories.csv           # Generated CSV from Task-4
+├── repositories.csv           # Generated CSV from Task-5
 └── README.md
 ```
 
