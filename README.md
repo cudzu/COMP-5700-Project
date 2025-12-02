@@ -7,7 +7,7 @@ The analysis is part of a course project and demonstrates practical skills in da
 ## Dataset
 
 - **Source:** [Hugging Face AIDev Dataset](https://huggingface.co/datasets/hao-li/AIDev)
-- ## Data Included
+## Data Included
 
 This project uses two primary Parquet files from the AIDev dataset and generates multiple CSV files through Tasks 1–5.
 
