@@ -7,9 +7,52 @@ The analysis is part of a course project and demonstrates practical skills in da
 ## Dataset
 
 - **Source:** [Hugging Face AIDev Dataset](https://huggingface.co/datasets/hao-li/AIDev)
-- **Data Included:**
-  - `all_pull_request.parquet` – contains AI-generated pull requests.
-  - `all_repository.parquet` – contains repository metadata.
+- ## Data Included
+
+This project uses two primary Parquet files from the AIDev dataset and generates multiple CSV files through Tasks 1–5.
+
+### **Source Parquet Files**
+- **all_pull_request.parquet**  
+  Contains metadata for ~933,000 AI-generated pull requests, including:
+  - PR ID  
+  - title  
+  - body  
+  - agent name  
+  - repository ID  
+  - repository URL  
+
+- **all_repository.parquet**  
+  Contains metadata for ~183,000 repositories, including:
+  - repository ID  
+  - programming language  
+  - star count  
+  - repository URL  
+
+---
+
+### **Generated CSV Files (Outputs of Tasks 1–5)**
+
+- **pull_requests.csv** (Task-1)  
+  Extracted pull request metadata used throughout later tasks.
+
+- **repositories.csv** (Task-2)  
+  Extracted repository metadata required for linking PRs to repositories.
+
+- **pr_task_types.csv** (Task-3)  
+  Contains PR classification results, type labels, and confidence scores.
+
+- **task4_output.csv** (Task-4)  
+  Contains supplemental derived data used for assignment requirements.
+
+- **task5_security_summary.csv** (Task-5)  
+  Contains final merged dataset with:
+  - PR ID  
+  - agent name  
+  - PR type  
+  - confidence  
+  - security keyword flag (1/0)  
+
+These CSVs form the full processed dataset for analyzing agentic AI behavior and security-related patterns in PR generation.
 
 - **Size:**
   - Pull Requests: ~933,000 rows
